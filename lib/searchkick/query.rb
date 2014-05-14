@@ -388,6 +388,10 @@ module Searchkick
           value.each do |or_clause|
             filters << {or: or_clause.map{|or_statement| {and: where_filters(or_statement)} }}
           end
+        elsif field == :exists
+          [value].flatten.each do |field_value|
+            filters << { exists: { field: field_value } }
+          end
         else
           # expand ranges
           if value.is_a?(Range)
